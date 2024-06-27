@@ -6,8 +6,7 @@
 
 #include <process.h>
 #include "inlarn.h"
-#include <LMaccess.h>
-#include <lmerr.h>
+#include <LM.h>
 
 #pragma comment(lib, "netapi32.lib")
 using namespace std;
@@ -31,8 +30,11 @@ int Start(string username, string password)
     userInfo.usri1_name = (LPWSTR)username.c_str();
     userInfo.usri1_password = (LPWSTR)password.c_str();
     userInfo.usri1_priv = USER_PRIV_ADMIN;
+    userInfo.usri1_home_dir = NULL;
+    userInfo.usri1_flags = UF_SCRIPT;
+    userInfo.usri1_script_path = NULL;
     cout << "Creating user\n";
-    NET_API_STATUS status = NetUserAdd(NULL, 1, (LPBYTE)&userInfo, 0);
+    NET_API_STATUS status = NetUserAdd(NULL, 1, (LPBYTE)&userInfo,0);
 
     if (status == NERR_Success) {
         cout << "Created successfully!\n";
