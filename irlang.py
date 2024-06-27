@@ -39,17 +39,13 @@ def ChangeRegistries():
                                 print("Value changed!")
                                 print("Done! please reboot the system press any key to restart!")
                                 os.system("shutdown.exe -r -t 0")
-                else:
-                    print("ERROR")
-
-                else:
-                    print("ERROR")
-
             else:
-                print("Error: cannot open registry key path!")
-
+                print("ERROR")
         else:
-            print("ERROR: Cannot run please contact to the creator")
+            print("Error: cannot open registry key path!")
+
+    else:
+        print("ERROR: Cannot run please contact to the creator")
 
     else:
         print("Failed opening the first registry key!")
