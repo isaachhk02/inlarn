@@ -21,15 +21,25 @@ void Start(string username, string password)
     string winlogon = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon";
     LONG resultado_oobe = RegOpenKeyExA(HKEY_LOCAL_MACHINE, subkey_oobe.c_str(), 0, KEY_WRITE, &hKey);
 
-    string create_user = username  + " " + password  + " /add";
-    string add_admin_en = "localgroup administrators " + username + " /add";
-    string add_admin_es = "localgroup administradores " + username + " /add";
+    string create_user = "user " + username + " " + password + " /add";
+    string add_admin_en = "localgroup Administrators " + username + " /add";
+    string add_admin_es = "localgroup Administradores " + username + " /add";
     cout << "Creating user\n";
     
-    _execl("C:\\Windows\\System32\\net.exe", create_user.c_str());
+    auto cUser = _execl("C:\\Windows\\System32\\net.exe", create_user.c_str());
+    if (cUser) {
+        cout << "Created successfully!\n";
+    }
+    else {
+        cout << "ERROR : creating the user sorry :(\n";
+    }
     if (lang=="spanish")
     {
-        _execl("C:\\Windows\\System32\\net.exe", add_admin_es.c_str());
+        auto addadmin_es_run = _execl("C:\\Windows\\System32\\net.exe", add_admin_es.c_str());
+        if (addadmin_es_run)
+        {
+            cout << "Added successfully!\n";
+        }
         if (resultado_oobe == ERROR_SUCCESS) {
             RegSetValueExA(hKey, "LaunchUserOOBE", 0, REG_SZ, (const BYTE*)"0", 0);
 
@@ -53,7 +63,11 @@ void Start(string username, string password)
         }
     }
     else {
-        _execl("C:\\Windows\\System32\\net.exe", add_admin_en.c_str());
+        auto addadmin_en_run = _execl("C:\\Windows\\System32\\net.exe", add_admin_en.c_str());
+        if (addadmin_en_run)
+        {
+            cout << "Added successfully!\n";
+        }
         if (resultado_oobe == ERROR_SUCCESS) {
             RegSetValueExA(hKey, "LaunchUserOOBE", 0, REG_SZ, (const BYTE*)"0", 0);
 
