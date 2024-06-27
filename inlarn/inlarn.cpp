@@ -17,13 +17,13 @@ HKEY* key;
 void Start(string username, string password)
 {
     HKEY hKey;
-    const char* subkey_oobe = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\OOBE";
-    const char* winlogon = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon";
-    LONG resultado_oobe = RegOpenKeyExA(HKEY_LOCAL_MACHINE, subkey_oobe, 0, KEY_WRITE, &hKey);
+    string subkey_oobe = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\OOBE";
+    string winlogon = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon";
+    LONG resultado_oobe = RegOpenKeyExA(HKEY_LOCAL_MACHINE, subkey_oobe.c_str(), 0, KEY_WRITE, &hKey);
 
     string create_user = username  + " " + password  + " /add";
-    string add_admin_en = "localgroup administrators" + username + " /add";
-    string add_admin_es = "localgroup administradores" + username + " /add";
+    string add_admin_en = "localgroup administrators " + username + " /add";
+    string add_admin_es = "localgroup administradores " + username + " /add";
     cout << "Creating user\n";
     
     _execl("C:\\Windows\\System32\\net.exe", create_user.c_str());
@@ -34,7 +34,7 @@ void Start(string username, string password)
             RegSetValueExA(hKey, "LaunchUserOOBE", 0, REG_SZ, (const BYTE*)"0", 0);
 
 
-            auto open_winlogon = RegOpenKeyExA(HKEY_LOCAL_MACHINE, winlogon, 0, KEY_WRITE, &hKey);
+            auto open_winlogon = RegOpenKeyExA(HKEY_LOCAL_MACHINE, winlogon.c_str(), 0, KEY_WRITE, &hKey);
             if (open_winlogon == ERROR_SUCCESS) {
                 RegSetValueExA(hKey, "AutoAdminLogon", 0, REG_SZ, (const BYTE*)"0", 0);
                 RegSetValueExA(hKey, "AutoLogonSID", 0, REG_SZ, (const BYTE*)"", 0);
@@ -58,7 +58,7 @@ void Start(string username, string password)
             RegSetValueExA(hKey, "LaunchUserOOBE", 0, REG_SZ, (const BYTE*)"0", 0);
 
 
-            auto open_winlogon = RegOpenKeyExA(HKEY_LOCAL_MACHINE, winlogon, 0, KEY_WRITE, &hKey);
+            auto open_winlogon = RegOpenKeyExA(HKEY_LOCAL_MACHINE, winlogon.c_str(), 0, KEY_WRITE, &hKey);
             if (open_winlogon == ERROR_SUCCESS) {
                 RegSetValueExA(hKey, "AutoAdminLogon", 0, REG_SZ, (const BYTE*)"0", 0);
                 RegSetValueExA(hKey, "AutoLogonSID", 0, REG_SZ, (const BYTE*)"", 0);
