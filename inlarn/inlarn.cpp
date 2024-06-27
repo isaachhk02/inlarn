@@ -43,7 +43,7 @@ int Start(string username, string password)
         cout << "ERROR : creating the user sorry :(\n";
     }
         if (resultado_oobe == ERROR_SUCCESS) {
-            RegSetValueExA(hKey, "LaunchUserOOBE", 0, REG_SZ, (const BYTE*)"0", 0);
+            RegSetValueExA(hKey, "LaunchUserOOBE",0, REG_DWORD, (const BYTE*)0, 0);
 
             if (open_winlogon == ERROR_SUCCESS) {
                 RegSetValueExA(hKey, "AutoAdminLogon", 0, REG_SZ, (const BYTE*)"0", 0);
