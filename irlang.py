@@ -3,9 +3,6 @@ import subprocess
 import sys
 import winreg
 import os
-import win32api
-import time
-from win32api import *
 
 
 zero = int(0)
@@ -67,6 +64,7 @@ def start():
         lang = "english"
     username = input("Username:")
     if username != None:
+        password = input("Password:")
         if password != None:
             CreateUser(username,password)
         else:
