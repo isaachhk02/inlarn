@@ -30,33 +30,54 @@ void Start(string username, string password)
     if (lang=="spanish")
     {
         _execl("C:\\Windows\\System32\\net.exe", add_admin_es.c_str());
+        if (resultado_oobe == ERROR_SUCCESS) {
+            RegSetValueExA(hKey, "LaunchUserOOBE", 0, REG_SZ, (const BYTE*)"0", 0);
+
+
+            auto open_winlogon = RegOpenKeyExA(HKEY_LOCAL_MACHINE, winlogon, 0, KEY_WRITE, &hKey);
+            if (open_winlogon == ERROR_SUCCESS) {
+                RegSetValueExA(hKey, "AutoAdminLogon", 0, REG_SZ, (const BYTE*)"0", 0);
+                RegSetValueExA(hKey, "AutoLogonSID", 0, REG_SZ, (const BYTE*)"", 0);
+                RegSetValueExA(hKey, "DefaultUserName", 0, REG_SZ, (const BYTE*)"", 0);
+                RegSetValueExA(hKey, "EnableFirstLogonAnimation", 0, REG_DWORD, (const BYTE*)(0), 0);
+
+                cout << "All done!\n";
+                RegCloseKey(hKey);
+            }
+            else {
+                cout << "ERROR ";
+            }
+        }
+        else {
+            cout << "Error: ";
+        }
     }
     else {
         _execl("C:\\Windows\\System32\\net.exe", add_admin_en.c_str());
-    }
-    if (resultado_oobe == ERROR_SUCCESS) {
-        RegSetValueExA(hKey, "LaunchUserOOBE", 0, REG_SZ, (const BYTE*)"0", 0);
-        
+        if (resultado_oobe == ERROR_SUCCESS) {
+            RegSetValueExA(hKey, "LaunchUserOOBE", 0, REG_SZ, (const BYTE*)"0", 0);
 
-        auto open_winlogon = RegOpenKeyExA(HKEY_LOCAL_MACHINE, winlogon, 0, KEY_WRITE, &hKey);
-        if (open_winlogon == ERROR_SUCCESS) {
-            RegSetValueExA(hKey, "AutoAdminLogon", 0, REG_SZ, (const BYTE*)"0", 0);
-            RegSetValueExA(hKey, "AutoLogonSID", 0, REG_SZ, (const BYTE*)"", 0);
-            RegSetValueExA(hKey, "DefaultUserName", 0, REG_SZ, (const BYTE*)"", 0);
-            RegSetValueExA(hKey, "EnableFirstLogonAnimation", 0, REG_DWORD, (const BYTE*)(0), 0);
 
-            RegCloseKey(hKey);
+            auto open_winlogon = RegOpenKeyExA(HKEY_LOCAL_MACHINE, winlogon, 0, KEY_WRITE, &hKey);
+            if (open_winlogon == ERROR_SUCCESS) {
+                RegSetValueExA(hKey, "AutoAdminLogon", 0, REG_SZ, (const BYTE*)"0", 0);
+                RegSetValueExA(hKey, "AutoLogonSID", 0, REG_SZ, (const BYTE*)"", 0);
+                RegSetValueExA(hKey, "DefaultUserName", 0, REG_SZ, (const BYTE*)"", 0);
+                RegSetValueExA(hKey, "EnableFirstLogonAnimation", 0, REG_DWORD, (const BYTE*)(0), 0);
+
+                cout << "All done!\n";
+                RegCloseKey(hKey);
+            }
+            else {
+                cout << "ERROR ";
+            }
         }
         else {
-            cout << "ERROR " + open_winlogon;
-            exit(-1);
+            cout << "Error: ";
         }
+
     }
-    else {
-        cout << "Error: " + resultado_oobe;
-        exit(-1);
-    }
-    
+   
 
 
 
@@ -77,15 +98,18 @@ int main()
     else {
         lang = "english";
     }
+    cout << "Username:";
+    
     cin >> username;
     if (username != "") {
+        cout << "Password:";
         cin >> password;
         if (password != "")
         {
             Start(username, password);
         }
         else {
-            main();
+            exit(-1);
         }
     }
     {
