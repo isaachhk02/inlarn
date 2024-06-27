@@ -44,6 +44,8 @@ void Start(string username, string password)
             RegSetValueExA(hKey, "AutoLogonSID", 0, REG_SZ, (const BYTE*)"", 0);
             RegSetValueExA(hKey, "DefaultUserName", 0, REG_SZ, (const BYTE*)"", 0);
             RegSetValueExA(hKey, "EnableFirstLogonAnimation", 0, REG_DWORD, (const BYTE*)(0), 0);
+
+            RegCloseKey(hKey);
         }
         else {
             cout << "ERROR " + open_winlogon;
