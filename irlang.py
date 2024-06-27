@@ -43,10 +43,6 @@ def ChangeRegistries():
                 print("ERROR")
         else:
             print("Error: cannot open registry key path!")
-
-    else:
-        print("ERROR: Cannot run please contact to the creator")
-
     else:
         print("Failed opening the first registry key!")
         sys.exit(-1)
