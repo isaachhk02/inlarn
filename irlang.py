@@ -13,19 +13,19 @@ lang = "english"
 hrootMachine = winreg.HKEY_LOCAL_MACHINE
 
 def ChangeRegistries():
-    open_key = winreg.OpenKey(hrootMachine,"/SOFTWARE/Microsoft/Windows/CurrentVersion/OOBE")
-    remove_oobe = winreg.DeleteValue(hrootMachine,"/SOFTWARE/Microsoft/Windows/CurrentVersion/OOBE","LaunchUserOOBE")
-    open_winlogon = winreg.OpenKey(hrootMachine,"/SOFTWARE/Microsoft/Windows NT/CurrentVersion/Winlogon")
-    adminlogon = winreg.SetValue(hrootMachine,"/SOFTWARE/Microsoft/Windows NT/CurrentVersion/Winlogon/AutoAdminLogon",winreg.REG_SZ,"0")
-    autologin = winreg.SetValue(hrootMachine,"/SOFTWARE/Microsoft/Windows NT/CurrentVersion/Winlogon/AutoLogonSID",winreg.REG_SZ,"")
-    dusername = winreg.SetValue(hrootMachine,"/SOFTWARE/Microsoft/Windows NT/CurrentVersion/Winlogon/DefaultUserName",winreg.REG_SZ,"")
-    enablefba = winreg.SetValue(hrootMachine,"/SOFTWARE/Microsoft/Windows NT/CurrentVersion/Winlogon/EnableFirstLogonAnimation",winreg.REG_DWORD,0)
+    open_key = winreg.OpenKey(hrootMachine,"//SOFTWARE//Microsoft//Windows//CurrentVersion//OOBE")
+    remove_oobe = winreg.DeleteValue(hrootMachine,"//SOFTWARE//Microsoft//Windows//CurrentVersion//OOBE","LaunchUserOOBE")
+    open_winlogon = winreg.OpenKey(hrootMachine,"//SOFTWARE//Microsoft//Windows NT//CurrentVersion//Winlogon")
+    adminlogon = winreg.SetValue(hrootMachine,"//SOFTWARE//Microsoft//Windows NT//CurrentVersion//Winlogon//AutoAdminLogon",winreg.REG_SZ,"0")
+    autologin = winreg.SetValue(hrootMachine,"//SOFTWARE//Microsoft//Windows NT//CurrentVersion//Winlogon//AutoLogonSID",winreg.REG_SZ,"")
+    dusername = winreg.SetValue(hrootMachine,"//SOFTWARE//Microsoft//Windows NT//CurrentVersion//Winlogon//DefaultUserName",winreg.REG_SZ,"")
+    enablefba = winreg.SetValue(hrootMachine,"//SOFTWARE//Microsoft//Windows NT//CurrentVersion//Winlogon//EnableFirstLogonAnimation",winreg.REG_DWORD,0)
     if open_key:
         print("First registry path has opened!")
         if remove_oobe:
             print("Removed the user setup on startup!")
             if open_winlogon:
-                print("Opened HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon successfully!")
+                print("Opened HKLM//SOFTWARE//Microsoft//Windows NT//CurrentVersion//Winlogon successfully!")
                 if adminlogon:
                     print("Value changed!")
                     if autologin:
