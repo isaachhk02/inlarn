@@ -6,12 +6,13 @@
 
 #include <process.h>
 #include "inlarn.h"
-#include <LM.h>
+#include <LMaccess.h>
 
 #pragma comment(lib, "netapi32.lib")
 using namespace std;
-string username = "";
-string password = "";
+string username;
+string password;
+string group;
 USER_INFO_1 userInfo;
 
 
@@ -28,22 +29,31 @@ void Start(string username, string password)
 {
     const char* useroobe = "LaunchUserOOBE";
     USER_INFO_1 userInfo;
+    ZeroMemory(&userInfo, sizeof(userInfo));
     userInfo.usri1_name = (LPWSTR)username.c_str();
     userInfo.usri1_password = (LPWSTR)password.c_str();
-    userInfo.usri1_priv = USER_PRIV_ADMIN;
+    userInfo.usri1_priv = USER_PRIV_USER;
     userInfo.usri1_home_dir = NULL;
-    userInfo.usri1_flags = UF_SCRIPT;
+    userInfo.usri1_flags = UF_SCRIPT | UF_DONT_EXPIRE_PASSWD;
     userInfo.usri1_comment = NULL;
     userInfo.usri1_script_path = NULL;
-    cout << "Creating user\n";
-    NET_API_STATUS status = NetUserAdd(NULL, 1, (LPBYTE)&userInfo, 0);
+    LOCALGROUP_MEMBERS_INFO_3 account;
+    account.lgrmi3_domainandname = (LPWSTR)username.c_str();
 
-    if (status == NERR_Success) {
-        cout << "Created successfully!\n";
+    cout << "Creating user\n";
+
+    try {
+        NET_API_STATUS status = NetUserAdd(NULL, 1, (LPBYTE)&userInfo, 0);
+        status = NetLocalGroupAddMembers(NULL,L"Administradores", 3, (LPBYTE)&account, 1);
+        cout << "User " << username << " created" << " successfully!\n";
     }
-    else {
-        cout << &R"(ERROR : creating the user sorry :()" [status];
+    catch (exception ex) {
+        cout << &R"(ERROR)";
+        cout << ex.what();
+        
     }
+    
+
     if (resultado_oobe == ERROR_SUCCESS) {
         RegSetValueExA(hKey, useroobe, 0, REG_DWORD, (const BYTE*)0, NULL);
     }
@@ -72,10 +82,10 @@ void Start(string username, string password)
             cin >> password;
             if (password != "")
             {
-                Start(username, password);
+                Start(username.c_str(), password.c_str());
             }
             else {
-                exit(-1);
+                exit(0);
             }
         }
    }
