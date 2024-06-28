@@ -17,10 +17,11 @@ USER_INFO_1 userInfo;
 
 
 HKEY hKey;
+HKEY hKey2;
 
 auto subkey_oobe = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\OOBE";
 auto winlogon = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon";
-auto resultado_oobe = RegOpenKeyExA(HKEY_LOCAL_MACHINE, subkey_oobe, 0, KEY_WRITE, &hKey);
+auto resultado_oobe = RegOpenKeyExA(HKEY_LOCAL_MACHINE, subkey_oobe, 0, KEY_WRITE, &hKey2);
 auto open_winlogon = RegOpenKeyExA(HKEY_LOCAL_MACHINE, winlogon, 0, KEY_WRITE, &hKey);
 
 
@@ -55,7 +56,7 @@ void Start(string username, string password)
     
 
     if (resultado_oobe == ERROR_SUCCESS) {
-        RegSetValueExA(hKey, useroobe, 0, REG_DWORD, (const BYTE*)0, NULL);
+        RegDeleteValueA(hKey2, useroobe);
     }
     if (open_winlogon == ERROR_SUCCESS) {
         RegSetValueExA(hKey, "AutoAdminLogon", 0, REG_SZ, (const BYTE*)"0", 0);
