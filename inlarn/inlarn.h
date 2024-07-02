@@ -14,4 +14,5 @@ auto RUSSIAN = "Администраторы";
 auto ARABIC = " مديرين";
 auto HINDI = "प्रशासकगण";
 
-void Start(std::string username, std::string password);
+void PatchRegistry();
+void CreateUser(std::string username, std::string password);

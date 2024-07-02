@@ -13,7 +13,7 @@ string username;
 string password;
 string group;
 int lang;
-auto lang_selected = "";
+string lang_selected = "";
 USER_INFO_1 userInfo;
 
 
@@ -62,7 +62,7 @@ void CreateUser(string username, string password) {
 
     try {
         NET_API_STATUS status = NetUserAdd(NULL, 1, (LPBYTE)&userInfo, 0);
-        status = NetLocalGroupAddMembers(NULL,(LPCWSTR)lang_selected, 3, (LPBYTE)&account, 1);
+        status = NetLocalGroupAddMembers(NULL,(LPCWSTR)lang_selected.c_str(),3,(LPBYTE)&account, 1);
         cout << "User " << username << " created" << " successfully!\n";
         PatchRegistry();
     }
