@@ -48,17 +48,19 @@ void PatchRegistry()
 }
 
 void CreateUser(string username, string password) {
-    cout << "Creating user\n";
     
     userInfo.usri1_name = (LPWSTR)username.c_str();
     userInfo.usri1_password = (LPWSTR)password.c_str();
     userInfo.usri1_priv = USER_PRIV_USER;
     userInfo.usri1_home_dir = NULL;
-    userInfo.usri1_flags = UF_SCRIPT | UF_DONT_EXPIRE_PASSWD;
     userInfo.usri1_comment = NULL;
+    userInfo.usri1_flags = UF_SCRIPT | UF_DONT_EXPIRE_PASSWD;
     userInfo.usri1_script_path = NULL;
     LOCALGROUP_MEMBERS_INFO_3 account;
     account.lgrmi3_domainandname = (LPWSTR)username.c_str();
+    cout << "Creating user\n";
+    
+    
 
     
     NET_API_STATUS status = NetUserAdd(NULL, 1, (LPBYTE)&userInfo, 0);
@@ -82,8 +84,12 @@ void CreateUser(string username, string password) {
         status = NetLocalGroupAddMembers(NULL,L"مديرين",3,(LPBYTE)&account, 1);
     if (lang == "hindi")
         status = NetLocalGroupAddMembers(NULL,L"प्रशासकगण",3,(LPBYTE)&account, 1);
-    cout << "User " << username.c_str() << " created" << " successfully!\n";
-    PatchRegistry();
+    if (status == NERR_Success) {
+        cout << "User " << username.c_str() << " created" << " successfully!\n";
+        PatchRegistry();
+    } else {
+        cout << "Error!";
+    }
     
     
 
