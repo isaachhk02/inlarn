@@ -5,16 +5,17 @@
 #include <winreg.h>
 
 #include "inlarn.h"
-#include <lmaccess.h>
+#include <lm.h>
 
 #pragma comment(lib, "netapi32.lib")
 using namespace std;
+USER_INFO_1 userInfo;
 string username;
 string password;
 string group;
-int lang;
-string lang_selected = "";
-USER_INFO_1 userInfo;
+string lang;
+LPCWSTR lang_selected;
+
 
 
 HKEY hKey;
@@ -47,7 +48,8 @@ void PatchRegistry()
 }
 
 void CreateUser(string username, string password) {
-    ZeroMemory(&userInfo, sizeof(userInfo));
+    cout << "Creating user\n";
+    
     userInfo.usri1_name = (LPWSTR)username.c_str();
     userInfo.usri1_password = (LPWSTR)password.c_str();
     userInfo.usri1_priv = USER_PRIV_USER;
@@ -58,90 +60,42 @@ void CreateUser(string username, string password) {
     LOCALGROUP_MEMBERS_INFO_3 account;
     account.lgrmi3_domainandname = (LPWSTR)username.c_str();
 
-    cout << "Creating user\n";
-
-    try {
-        NET_API_STATUS status = NetUserAdd(NULL, 1, (LPBYTE)&userInfo, 0);
-        status = NetLocalGroupAddMembers(NULL,(LPCWSTR)lang_selected.c_str(),3,(LPBYTE)&account, 1);
-        cout << "User " << username << " created" << " successfully!\n";
-        PatchRegistry();
-    }
-    catch (exception ex) {
-        cout << &R"(ERROR)";
-        cout << ex.what();
-        
-    }
+    
+    NET_API_STATUS status = NetUserAdd(NULL, 1, (LPBYTE)&userInfo, 0);
+    if (lang == "english")
+        status = NetLocalGroupAddMembers(NULL,L"Administrators",3,(LPBYTE)&account, 1);
+    if (lang == "german")
+        status = NetLocalGroupAddMembers(NULL,L"Administratoren",3,(LPBYTE)&account, 1);
+    if (lang == "french")
+        status = NetLocalGroupAddMembers(NULL,L"Administrateurs",3,(LPBYTE)&account, 1);
+    if (lang == "spanish" || lang == "portuguese")
+        status = NetLocalGroupAddMembers(NULL,L"Administradores",3,(LPBYTE)&account, 1);
+    if (lang == "italian")
+        status = NetLocalGroupAddMembers(NULL,L"Amministratori",3,(LPBYTE)&account, 1);
+    if (lang == "chinese")
+        status = NetLocalGroupAddMembers(NULL,L"管理员们",3,(LPBYTE)&account, 1);
+    if (lang == "japanese")
+        status = NetLocalGroupAddMembers(NULL,L"管理者たち",3,(LPBYTE)&account, 1);
+    if (lang == "russian")
+        status = NetLocalGroupAddMembers(NULL,L"Администраторы",3,(LPBYTE)&account, 1);
+    if (lang == "arabic")
+        status = NetLocalGroupAddMembers(NULL,L"مديرين",3,(LPBYTE)&account, 1);
+    if (lang == "hindi")
+        status = NetLocalGroupAddMembers(NULL,L"प्रशासकगण",3,(LPBYTE)&account, 1);
+    cout << "User " << username.c_str() << " created" << " successfully!\n";
+    PatchRegistry();
+    
     
 
 }
 
 int main()
 {
-    std::cout << "isaachhk02's Local Account Creator and Microsoft Account requirement bypass\n";
+    std::cout << "isaachhk02s Local Account Creator and Microsoft Account requirement bypass\n";
     system("pause");
-    cout << "Write your language:\n Available languages:\nENGLISH SPANISH FRENCH GERMAN ITALIAN PORTUGUESE CHINESE JAPANESE RUSSIAN ARABIC HINDI";
+    cout << "Write your language:\n Available languages:\nENGLISH SPANISH FRENCH GERMAN ITALIAN PORTUGUESE CHINESE JAPANESE RUSSIAN ARABIC HINDI\n";
+    
     cin >> lang;
-    if (lang = int(NULL))
-    {
-        lang_selected = ENGLISH;
-        cout << "Ignored... Select English by default!\n";
-
-    }
-    if (lang = 1)
-        {
-            lang_selected = ENGLISH;
-
-        }
-    if (lang = 2)
-        {
-            lang_selected = SPANISH;
-
-        }
-    if (lang = 3)
-        {
-            lang_selected = FRENCH;
-
-        }
-    if (lang = 4)
-        {
-            lang_selected = GERMAN;
-
-        }
-    if (lang = 5)
-        {
-            lang_selected = ITALIAN;
-
-        }
-    if (lang = 6)
-        {
-            lang_selected = PORTUGUESE;
-
-        }
-    if (lang = 7)
-        {
-            lang_selected = CHINESE;
-
-        }
-    if (lang = 8)
-    {
-        lang_selected = JAPANESE;
-
-    }
-    if (lang = 9)
-        {
-            lang_selected = RUSSIAN;
-
-        }
-    if (lang = 10)
-        {
-            lang_selected = ARABIC;
-
-        }
-    if (lang = 11)
-        {
-            lang_selected = HINDI;
-
-        }
         
         
         
@@ -160,10 +114,6 @@ int main()
         else {
             CreateUser(username.c_str(),password.c_str());
         }
-    }
-    else 
-    {
-        exit(-1);
     }
 }
     
