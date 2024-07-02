@@ -3,20 +3,17 @@
 #include <iostream>
 #include <windows.h>
 #include <winreg.h>
-
+#include <process.h>
 #include "inlarn.h"
-#include <lm.h>
+#include <lmaccess.h>
 
 #pragma comment(lib, "netapi32.lib")
 using namespace std;
-USER_INFO_1 userInfo;
+
 string username;
 string password;
-string group;
+
 string lang;
-LPCWSTR lang_selected;
-
-
 
 HKEY hKey;
 HKEY hKey2;
@@ -26,29 +23,10 @@ auto winlogon = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon";
 auto resultado_oobe = RegOpenKeyExA(HKEY_LOCAL_MACHINE, subkey_oobe, 0, KEY_WRITE, &hKey2);
 auto open_winlogon = RegOpenKeyExA(HKEY_LOCAL_MACHINE, winlogon, 0, KEY_WRITE, &hKey);
 
-void PatchRegistry()
-{
-    const char* useroobe = "LaunchUserOOBE";
-   
-    if (resultado_oobe == ERROR_SUCCESS) {
-        RegDeleteValueA(hKey2, useroobe);
-    }
-    if (open_winlogon == ERROR_SUCCESS) {
-        RegSetValueExA(hKey, "AutoAdminLogon", 0, REG_SZ, (const BYTE*)"0", 0);
-        RegSetValueExA(hKey, "AutoLogonSID", 0, REG_SZ, (const BYTE*)"", 0);
-        RegSetValueExA(hKey, "DefaultUserName", 0, REG_SZ, (const BYTE*)"", 0);
-        RegSetValueExA(hKey, "EnableFirstLogonAnimation", 0, REG_DWORD, (const BYTE*)(0), 0);
-
-        cout << "All done!\n";
-        RegCloseKey(hKey);
-    }
-    else {
-        cout << "ERROR ";
-    }
-}
 
 void CreateUser(string username, string password) {
-    
+    USER_INFO_1 userInfo;
+    ZeroMemory(&userInfo, sizeof(userInfo));
     userInfo.usri1_name = (LPWSTR)username.c_str();
     userInfo.usri1_password = (LPWSTR)password.c_str();
     userInfo.usri1_priv = USER_PRIV_USER;
@@ -84,9 +62,8 @@ void CreateUser(string username, string password) {
         status = NetLocalGroupAddMembers(NULL,L"مديرين",3,(LPBYTE)&account, 1);
     if (lang == "hindi")
         status = NetLocalGroupAddMembers(NULL,L"प्रशासकगण",3,(LPBYTE)&account, 1);
-    if (status == NERR_Success) {
+    if (status == 0) {
         cout << "User " << username.c_str() << " created" << " successfully!\n";
-        PatchRegistry();
     } else {
         cout << "Error!";
     }
@@ -94,7 +71,26 @@ void CreateUser(string username, string password) {
     
 
 }
+void PatchRegistry()
+{
+    const char* useroobe = "LaunchUserOOBE";
+   
+    if (resultado_oobe == ERROR_SUCCESS) {
+        RegDeleteValueA(hKey2, useroobe);
+    }
+    if (open_winlogon == ERROR_SUCCESS) {
+        RegSetValueExA(hKey, "AutoAdminLogon", 0, REG_SZ, (const BYTE*)"0", 0);
+        RegSetValueExA(hKey, "AutoLogonSID", 0, REG_SZ, (const BYTE*)"", 0);
+        RegSetValueExA(hKey, "DefaultUserName", 0, REG_SZ, (const BYTE*)"", 0);
+        RegSetValueExA(hKey, "EnableFirstLogonAnimation", 0, REG_DWORD, (const BYTE*)(0), 0);
 
+        cout << "All done!\n";
+        RegCloseKey(hKey);
+    }
+    else {
+        cout << "ERROR ";
+    }
+}
 int main()
 {
     std::cout << "isaachhk02s Local Account Creator and Microsoft Account requirement bypass\n";
@@ -116,9 +112,14 @@ int main()
         {
             password = "";
             CreateUser(username.c_str(),password.c_str());
+            PatchRegistry();
+            
+            
         } 
         else {
             CreateUser(username.c_str(),password.c_str());
+            PatchRegistry();
+            
         }
     }
 }
