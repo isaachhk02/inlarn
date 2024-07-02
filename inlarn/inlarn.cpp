@@ -5,9 +5,8 @@
 #include <winreg.h>
 #include <process.h>
 #include "inlarn.h"
-#include <lmaccess.h>
+#include <unistd.h>
 
-#pragma comment(lib, "netapi32.lib")
 using namespace std;
 
 string username;
@@ -25,43 +24,31 @@ auto open_winlogon = RegOpenKeyExA(HKEY_LOCAL_MACHINE, winlogon, 0, KEY_WRITE, &
 
 
 void CreateUser(string username, string password) {
-    USER_INFO_1 userInfo;
-    ZeroMemory(&userInfo, sizeof(userInfo));
-    userInfo.usri1_name = (LPWSTR)username.c_str();
-    userInfo.usri1_password = (LPWSTR)password.c_str();
-    userInfo.usri1_priv = USER_PRIV_USER;
-    userInfo.usri1_home_dir = NULL;
-    userInfo.usri1_comment = NULL;
-    userInfo.usri1_flags = UF_SCRIPT | UF_DONT_EXPIRE_PASSWD;
-    userInfo.usri1_script_path = NULL;
-    LOCALGROUP_MEMBERS_INFO_3 account;
-    account.lgrmi3_domainandname = (LPWSTR)username.c_str();
     cout << "Creating user\n";
-    
-    
+    execl("C:\\Windows\\System32\\net.exe",["user",username,password,"/add"]);
 
     
-    NET_API_STATUS status = NetUserAdd(NULL, 1, (LPBYTE)&userInfo, 0);
     if (lang == "english")
-        status = NetLocalGroupAddMembers(NULL,L"Administrators",3,(LPBYTE)&account, 1);
+        execl("C:\\Windows\\System32\\net.exe",["localgroup","Administrators",username,"/add"]);
     if (lang == "german")
-        status = NetLocalGroupAddMembers(NULL,L"Administratoren",3,(LPBYTE)&account, 1);
+        execl("C:\\Windows\\System32\\net.exe",["localgroup","Administratoren",username,"/add"]);
     if (lang == "french")
-        status = NetLocalGroupAddMembers(NULL,L"Administrateurs",3,(LPBYTE)&account, 1);
+        execl("C:\\Windows\\System32\\net.exe",["localgroup","Administrateurs",username,"/add"]);
     if (lang == "spanish" || lang == "portuguese")
-        status = NetLocalGroupAddMembers(NULL,L"Administradores",3,(LPBYTE)&account, 1);
+        execl("C:\\Windows\\System32\\net.exe",["localgroup","Administradores",username,"/add"]);
     if (lang == "italian")
-        status = NetLocalGroupAddMembers(NULL,L"Amministratori",3,(LPBYTE)&account, 1);
+        execl("C:\\Windows\\System32\\net.exe",["localgroup","Amministratori",username,"/add"]);
     if (lang == "chinese")
-        status = NetLocalGroupAddMembers(NULL,L"管理员们",3,(LPBYTE)&account, 1);
+        execl("C:\\Windows\\System32\\net.exe",["localgroup","管理员们",username,"/add"]);
     if (lang == "japanese")
-        status = NetLocalGroupAddMembers(NULL,L"管理者たち",3,(LPBYTE)&account, 1);
+        execl("C:\\Windows\\System32\\net.exe",["localgroup","管理者たち",username,"/add"]);
+        
     if (lang == "russian")
-        status = NetLocalGroupAddMembers(NULL,L"Администраторы",3,(LPBYTE)&account, 1);
+        execl("C:\\Windows\\System32\\net.exe",["localgroup","Администраторы",username,"/add"]);
     if (lang == "arabic")
-        status = NetLocalGroupAddMembers(NULL,L"مديرين",3,(LPBYTE)&account, 1);
+        execl("C:\\Windows\\System32\\net.exe",["localgroup","مديرين",username,"/add"]);
     if (lang == "hindi")
-        status = NetLocalGroupAddMembers(NULL,L"प्रशासकगण",3,(LPBYTE)&account, 1);
+        execl("C:\\Windows\\System32\\net.exe",["localgroup","प्रशासकगण",username,"/add"]);
     if (status == 0) {
         cout << "User " << username.c_str() << " created" << " successfully!\n";
     } else {
@@ -74,7 +61,7 @@ void CreateUser(string username, string password) {
 void PatchRegistry()
 {
     const char* useroobe = "LaunchUserOOBE";
-   
+    cout << "Patching\n";
     if (resultado_oobe == ERROR_SUCCESS) {
         RegDeleteValueA(hKey2, useroobe);
     }
