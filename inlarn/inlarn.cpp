@@ -1,18 +1,19 @@
 // created by isaachhk02 (isaacfhl)
 
 #include <iostream>
-#include <Windows.h>
+#include <windows.h>
 #include <winreg.h>
 
-#include <process.h>
 #include "inlarn.h"
-#include <LMaccess.h>
+#include <lmaccess.h>
 
 #pragma comment(lib, "netapi32.lib")
 using namespace std;
 string username;
 string password;
 string group;
+int lang;
+string lang_selected;
 USER_INFO_1 userInfo;
 
 
@@ -45,7 +46,7 @@ void Start(string username, string password)
 
     try {
         NET_API_STATUS status = NetUserAdd(NULL, 1, (LPBYTE)&userInfo, 0);
-        status = NetLocalGroupAddMembers(NULL,L"Administradores", 3, (LPBYTE)&account, 1);
+        status = NetLocalGroupAddMembers(NULL,(LPCWSTR)lang_selected.c_str(), 3, (LPBYTE)&account, 1);
         cout << "User " << username << " created" << " successfully!\n";
     }
     catch (exception ex) {
@@ -75,12 +76,58 @@ void Start(string username, string password)
     {
         std::cout << "isaachhk02's Local Account Creator and Microsoft Account requirement bypass\n";
         system("pause");
+        cout << "Write your language:\n Available languages:\nENGLISH SPANISH FRENCH GERMAN ITALIAN PORTUGUESE CHINESE JAPANESE RUSSIAN ARABIC HINDI";
+        cin >> lang;
+        if (lang == NULL)
+        {
+            lang_selected = ENGLISH;
+            cout << "Ignored... Select English by default!\n";
+
+        }
+        switch (lang)
+        {
+        case 1:
+            lang_selected = ENGLISH;
+            
+        case 2:
+            lang_selected = SPANISH;
+            
+        case 3:
+            lang_selected = FRENCH;
+            
+        case 4:
+            lang_selected = GERMAN;
+            
+        case 5:
+            lang_selected = ITALIAN;
+            
+        case 6:
+            lang_selected = CHINESE;
+            
+        case 7:
+            lang_selected = RUSSIAN;
+            
+        case 9:
+            lang_selected = JAPANESE;
+            
+        case 10:
+            lang_selected = ARABIC;
+            
+        case 11:
+            lang_selected = HINDI;
+            
+        default:
+            lang_selected = ENGLISH;
+            
+        }
+        
         cout << "Username:";
 
         cin >> username;
         if (username != "") {
             cout << "Password:";
             cin >> password;
+            cin >> lang;
             if (password != "")
             {
                 Start(username.c_str(), password.c_str());
