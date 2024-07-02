@@ -13,7 +13,7 @@ string username;
 string password;
 string group;
 int lang;
-string lang_selected;
+auto lang_selected = "";
 USER_INFO_1 userInfo;
 
 
@@ -25,37 +25,10 @@ auto winlogon = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon";
 auto resultado_oobe = RegOpenKeyExA(HKEY_LOCAL_MACHINE, subkey_oobe, 0, KEY_WRITE, &hKey2);
 auto open_winlogon = RegOpenKeyExA(HKEY_LOCAL_MACHINE, winlogon, 0, KEY_WRITE, &hKey);
 
-
-
-void Start(string username, string password)
+void PatchRegistry()
 {
     const char* useroobe = "LaunchUserOOBE";
-    USER_INFO_1 userInfo;
-    ZeroMemory(&userInfo, sizeof(userInfo));
-    userInfo.usri1_name = (LPWSTR)username.c_str();
-    userInfo.usri1_password = (LPWSTR)password.c_str();
-    userInfo.usri1_priv = USER_PRIV_USER;
-    userInfo.usri1_home_dir = NULL;
-    userInfo.usri1_flags = UF_SCRIPT | UF_DONT_EXPIRE_PASSWD;
-    userInfo.usri1_comment = NULL;
-    userInfo.usri1_script_path = NULL;
-    LOCALGROUP_MEMBERS_INFO_3 account;
-    account.lgrmi3_domainandname = (LPWSTR)username.c_str();
-
-    cout << "Creating user\n";
-
-    try {
-        NET_API_STATUS status = NetUserAdd(NULL, 1, (LPBYTE)&userInfo, 0);
-        status = NetLocalGroupAddMembers(NULL,(LPCWSTR)lang_selected.c_str(), 3, (LPBYTE)&account, 1);
-        cout << "User " << username << " created" << " successfully!\n";
-    }
-    catch (exception ex) {
-        cout << &R"(ERROR)";
-        cout << ex.what();
-        
-    }
-    
-
+   
     if (resultado_oobe == ERROR_SUCCESS) {
         RegDeleteValueA(hKey2, useroobe);
     }
@@ -72,69 +45,125 @@ void Start(string username, string password)
         cout << "ERROR ";
     }
 }
-    int main()
+
+void CreateUser(string username, string password) {
+    ZeroMemory(&userInfo, sizeof(userInfo));
+    userInfo.usri1_name = (LPWSTR)username.c_str();
+    userInfo.usri1_password = (LPWSTR)password.c_str();
+    userInfo.usri1_priv = USER_PRIV_USER;
+    userInfo.usri1_home_dir = NULL;
+    userInfo.usri1_flags = UF_SCRIPT | UF_DONT_EXPIRE_PASSWD;
+    userInfo.usri1_comment = NULL;
+    userInfo.usri1_script_path = NULL;
+    LOCALGROUP_MEMBERS_INFO_3 account;
+    account.lgrmi3_domainandname = (LPWSTR)username.c_str();
+
+    cout << "Creating user\n";
+
+    try {
+        NET_API_STATUS status = NetUserAdd(NULL, 1, (LPBYTE)&userInfo, 0);
+        status = NetLocalGroupAddMembers(NULL,(LPCWSTR)lang_selected, 3, (LPBYTE)&account, 1);
+        cout << "User " << username << " created" << " successfully!\n";
+        PatchRegistry();
+    }
+    catch (exception ex) {
+        cout << &R"(ERROR)";
+        cout << ex.what();
+        
+    }
+    
+
+}
+
+int main()
+{
+    std::cout << "isaachhk02's Local Account Creator and Microsoft Account requirement bypass\n";
+    system("pause");
+    cout << "Write your language:\n Available languages:\nENGLISH SPANISH FRENCH GERMAN ITALIAN PORTUGUESE CHINESE JAPANESE RUSSIAN ARABIC HINDI";
+    cin >> lang;
+    if (lang = int(NULL))
     {
-        std::cout << "isaachhk02's Local Account Creator and Microsoft Account requirement bypass\n";
-        system("pause");
-        cout << "Write your language:\n Available languages:\nENGLISH SPANISH FRENCH GERMAN ITALIAN PORTUGUESE CHINESE JAPANESE RUSSIAN ARABIC HINDI";
-        cin >> lang;
-        if (lang == NULL)
+        lang_selected = ENGLISH;
+        cout << "Ignored... Select English by default!\n";
+
+    }
+    if (lang = 1)
         {
             lang_selected = ENGLISH;
-            cout << "Ignored... Select English by default!\n";
 
         }
-        switch (lang)
+    if (lang = 2)
         {
-        case 1:
-            lang_selected = ENGLISH;
-            
-        case 2:
             lang_selected = SPANISH;
-            
-        case 3:
+
+        }
+    if (lang = 3)
+        {
             lang_selected = FRENCH;
-            
-        case 4:
+
+        }
+    if (lang = 4)
+        {
             lang_selected = GERMAN;
-            
-        case 5:
+
+        }
+    if (lang = 5)
+        {
             lang_selected = ITALIAN;
-            
-        case 6:
+
+        }
+    if (lang = 6)
+        {
+            lang_selected = PORTUGUESE;
+
+        }
+    if (lang = 7)
+        {
             lang_selected = CHINESE;
-            
-        case 7:
+
+        }
+    if (lang = 8)
+    {
+        lang_selected = JAPANESE;
+
+    }
+    if (lang = 9)
+        {
             lang_selected = RUSSIAN;
-            
-        case 9:
-            lang_selected = JAPANESE;
-            
-        case 10:
+
+        }
+    if (lang = 10)
+        {
             lang_selected = ARABIC;
-            
-        case 11:
+
+        }
+    if (lang = 11)
+        {
             lang_selected = HINDI;
-            
-        default:
-            lang_selected = ENGLISH;
-            
+
         }
         
-        cout << "Username:";
+        
+        
+    cout << "Username:";
 
-        cin >> username;
-        if (username != "") {
-            cout << "Password:";
-            cin >> password;
-            cin >> lang;
-            if (password != "")
-            {
-                Start(username.c_str(), password.c_str());
-            }
-            else {
-                exit(0);
-            }
+    cin >> username;
+    if (username != "") {
+        cout << "Password:";
+        cin >> password;
+        cin >> lang;
+        if (password == "")
+        {
+            password = "";
+            CreateUser(username.c_str(),password.c_str());
+        } 
+        else {
+            CreateUser(username.c_str(),password.c_str());
         }
-   }
+    }
+    else 
+    {
+        exit(-1);
+    }
+}
     
