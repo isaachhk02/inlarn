@@ -29,7 +29,7 @@ void CreateUser(string username, string password) {
 
     
     if (lang == "english")
-        execl("C:\\Windows\\System32\\net.exe",["localgroup","Administrators",username,"/add"]);
+        execl("C:\\Windows\\System32\\net.exe",["localgroup"],["Administrators"],[username],["/add"]);
     if (lang == "german")
         execl("C:\\Windows\\System32\\net.exe",["localgroup","Administratoren",username,"/add"]);
     if (lang == "french")
@@ -49,8 +49,7 @@ void CreateUser(string username, string password) {
         execl("C:\\Windows\\System32\\net.exe",["localgroup","مديرين",username,"/add"]);
     if (lang == "hindi")
         execl("C:\\Windows\\System32\\net.exe",["localgroup","प्रशासकगण",username,"/add"]);
-    if (status == 0) {
-        cout << "User " << username.c_str() << " created" << " successfully!\n";
+    cout << "User " << username.c_str() << " created" << " successfully!\n";
     } else {
         cout << "Error!";
     }
