@@ -1,0 +1,10 @@
+[package]
+name = "inlarn"
+version = "0.1.0"
+edition = "2021"
+author = "isaachhk02 {Isaac Ordoñez Fornós} 2024"
+
+[dependencies]
+
+windows = "0.57.0"
+windows-registry = "0.1.2"
