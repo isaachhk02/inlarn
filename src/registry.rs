@@ -1,8 +1,7 @@
-use std::process::{exit, Command, Output};
-
-use windows_registry::{Key, LOCAL_MACHINE};
-
+#[cfg(windows)]
 pub fn edit_registry(username: &str) {
+    use std::process::{exit, Command, Output};
+    use windows_registry::{Key, LOCAL_MACHINE};
     let hklm : &Key = LOCAL_MACHINE;
     let open_oobe = hklm.open("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\OOBE");
     if open_oobe.is_ok() {

@@ -5,6 +5,6 @@ edition = "2021"
 author = "isaachhk02 {Isaac Ordoñez Fornós} 2024"
 
 [dependencies]
-
-windows = "0.57.0"
+widestring = "0.5"
 windows-registry = "0.1.2"
+winapi = { version = "0.3.9", features = ["lmaccess", "lmcons", "lsalookup", "ntlsa", "winnt"] }

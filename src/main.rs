@@ -1,11 +1,12 @@
-use std::io;
-
 mod create_user;
 mod registry;
 
 extern crate windows_registry;
 
-fn main() {
+
+#[cfg(windows)]
+fn setup() {
+    use std::io;
     let mut _username : String = String::new();
     let mut _password : String = String::new();
     println!("Isaachhk02s Local Account Creator and Microsoft Account requirement bypass");
@@ -37,4 +38,11 @@ fn main() {
             }
         }
     }
+}
+
+fn main() {
+    #[cfg(windows)]
+    setup();
+    #[cfg(not(windows))]
+    println!("WTF are you running this outside Windows???")
 }
