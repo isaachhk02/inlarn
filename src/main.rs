@@ -1,9 +1,7 @@
-mod createuser;
+use std::io;
+
+mod create_user;
 mod registry;
-
-use std::{io, process::{exit, Command, Output}};
-
-use windows_registry::{Key, LOCAL_MACHINE};
 
 extern crate windows_registry;
 
@@ -30,12 +28,12 @@ fn main() {
             _ = io::stdin().read_line(&mut _password);
             if _password.is_empty() || !_password.is_empty() {
                 println!("Your password it's : {}",_password);
-                createuser(&_username, &_password,&lang);
-                edit_registry(&_username);
+                create_user::createuser(&_username, &_password,&lang);
+                registry::edit_registry(&_username);
             }
             else {
-                createuser(&_username, &_password,&lang);
-                edit_registry(&_username);
+                create_user::createuser(&_username, &_password,&lang);
+                registry::edit_registry(&_username);
             }
         }
     }

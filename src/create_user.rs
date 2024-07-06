@@ -1,4 +1,6 @@
-fn createuser(username: &str, password: &str,lang:&str) {
+use std::process::Command;
+
+pub fn createuser(username: &str, password: &str,lang:&str) {
     let _selected_lang = String::new();
     if username.is_empty() || password.is_empty() {
         panic!("Cannot create the user without name and password!");
@@ -28,6 +30,6 @@ fn createuser(username: &str, password: &str,lang:&str) {
             _ = _selected_lang.eq("प्रशासकगण");
         }
         let _assign_admin = Command::new(r"C:\Windows\System32\net.exe").arg("localgroup").arg(_selected_lang).arg(username).arg("/ADD").output().expect("Error to assign admin permisions");
-        edit_registry(username);
+    }
     }
 }
