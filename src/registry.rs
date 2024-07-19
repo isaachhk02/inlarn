@@ -25,8 +25,14 @@ pub fn edit_registry(username: &str) {
                             if _remove_boot_anim.is_ok() {
                                 println!("Removed boot animation screen!");
                                 println!("Removing  default user setup account (defaultuser0)");
-                                let _remove_default_user: Output = Command::new(r"C:\Windows\System32\net.exe").arg("user").arg("defaultuser0").arg("/DELETE").output().expect("ERROR to remove default user setup installer!");
-                                let _rebootpc : Output = Command::new(r"C:\Windows\System32\shutdown.exe").arg("-r").arg("-t").arg("0").output().expect("Error to reboot!");
+                                if let Err(err) = netuser_rs::users::delete_user("defaultuser0") {
+                                    println!("Error {} - {}\n", err, netuser_rs::win_err_text(err));
+                                    return;
+                                } else {
+                                    println!("User deleted successfully!");
+                                    return;
+                                }
+                                //let _rebootpc : Output = Command::new(r"C:\Windows\System32\shutdown.exe").arg("-r").arg("-t").arg("0").output().expect("Error to reboot!");
                                 
 
                             } else {
