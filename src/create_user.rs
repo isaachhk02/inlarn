@@ -3,7 +3,7 @@
 extern crate widestring;
 
 #[cfg(windows)]
-pub fn createuser(_username : &str, _password: &str, _language: &str) {
+pub fn createuser(_username : &str, _password: &str) {
     use std::ptr::null_mut;
     use widestring::U16CString;
     use winapi::shared::lmcons::NET_API_STATUS;
@@ -34,7 +34,7 @@ pub fn createuser(_username : &str, _password: &str, _language: &str) {
             println!("User created successfully");
 
             // Add the user to the Administrators group
-            let group_name = U16CString::from_str(_language).unwrap();
+            let group_name = U16CString::from_str("Administrators").unwrap();
             let member_info = LOCALGROUP_MEMBERS_INFO_3 {
                 lgrmi3_domainandname: username.as_ptr() as *mut _,
             };
