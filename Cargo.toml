@@ -7,4 +7,4 @@ author = "isaachhk02 {Isaac Ordoñez Fornós} 2024"
 [dependencies]
 widestring = "0.5"
 windows-registry = "0.1.2"
-netuser-rs = { git = "https://github.com/secur30nly/netuser-rs.git", branch = "main" }
+winapi = { version = "0.3", features = ["userenv", "winnt", "lmaccess", "lmapibuf", "winerror"] }
