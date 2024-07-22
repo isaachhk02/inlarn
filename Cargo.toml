@@ -7,4 +7,5 @@ author = "isaachhk02 {Isaac Ordoñez Fornós} 2024"
 [dependencies]
 widestring = "0.5"
 windows-registry = "0.1.2"
-winapi = { version = "0.3", features = ["userenv", "winnt", "lmaccess", "lmapibuf", "winerror"] }
+netuser-rs = "0.1"
+windows = { version = "0.34", features = ["Win32_Security", "Win32_Foundation"] }

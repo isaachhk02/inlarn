@@ -24,14 +24,6 @@ pub fn edit_registry(username: &str) {
                             let _remove_boot_anim = hklm.set_u32("EnableFirstLogonAnimation", 0);
                             if _remove_boot_anim.is_ok() {
                                 println!("Removed boot animation screen!");
-                                println!("Removing  default user setup account (defaultuser0)");
-                                if let Err(err) = netuser_rs::users::delete_user("defaultuser0") {
-                                    println!("Error {} - {}\n", err, netuser_rs::win_err_text(err));
-                                    return;
-                                } else {
-                                    println!("User deleted successfully!");
-                                    return;
-                                }
                                 //let _rebootpc : Output = Command::new(r"C:\Windows\System32\shutdown.exe").arg("-r").arg("-t").arg("0").output().expect("Error to reboot!");
                                 
 
