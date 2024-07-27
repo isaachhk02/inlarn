@@ -16,8 +16,8 @@ namespace inlarn
         string OOBE_SUBKEY = @"SOFTWARE\Microsoft\Windows\CurrentVersion\OOBE";
         string WINLOGON_SUBKEY = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon";
         string OOBE_KEY = "LaunchUserOOBE";
-        string AUTOLOGINADMIN = "stringAdminLogon";
-        string LOGINSID = "stringLogonSID";
+        string AUTOLOGINADMIN = "AdminLogon";
+        string LOGINSID = "LogonSID";
         string DEFAULTUSER = user;
         string DEFAULTUSERNAMEKEY = "DefaultUserName";
         string ZERO = "0";
