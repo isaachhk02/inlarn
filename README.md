@@ -4,9 +4,6 @@
 
 Create a local user account and bypass user setup wizard
 
-# How to build?
-
-`dotnet build`
 # How to use?
 
 Press Shift + F10 When appears for config the keyboard layout etc
