@@ -56,7 +56,7 @@ namespace inlarn
 
         private void CreateUser(string user, string pass)
         {
-            if (pass == null)
+            if (pass == "")
             {
                 pass = "";
             } else
