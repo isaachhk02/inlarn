@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
@@ -16,9 +16,8 @@ namespace inlarn
         public static string user = Environment.GetCommandLineArgs()[1];
         public static string pass = Environment.GetCommandLineArgs()[2];
 
-        string OOBE_SUBKEY = @"SOFTWARE\Microsoft\Windows\CurrentVersion\OOBE";
+        string OOBE_SUBKEY = @"SOFTWARE\Microsoft\Windows\CurrentVersion\OOBE\LaunchUserOOBE";
         string WINLOGON_SUBKEY = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon";
-        string OOBE_KEY = "LaunchUserOOBE";
         string AUTOLOGINADMIN = "AutoAdminLogon";
         string LOGINSID = "AutoLogonSID";
         string DEFAULTUSERNAMEKEY = "DefaultUserName";
@@ -29,7 +28,10 @@ namespace inlarn
         {
             try
             {
-                Registry.SetValue("HKEY_LOCAL_MACHINE\\" + OOBE_SUBKEY, OOBE_KEY, "");
+                RegistryKey HKLM = Registry.LocalMachine;
+
+                HKLM.DeleteValue(OOBE_SUBKEY,false);
+                HKLM.Close();
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Bypassed OOBE Setup (User Setup Wizard)");
                 Registry.SetValue("HKEY_LOCAL_MACHINE\\" + WINLOGON_SUBKEY, AUTOLOGINADMIN, ZERO);
@@ -38,7 +40,7 @@ namespace inlarn
                 Registry.SetValue("HKEY_LOCAL_MACHINE\\" + WINLOGON_SUBKEY, DEFAULTUSERNAMEKEY, "");
 
 
-                Registry.SetValue("HKEY_LOCAL_MACHINE\\" + WINLOGON_SUBKEY, FIRSTLOGOANIM, ZERO);
+                Registry.SetValue("HKEY_LOCAL_MACHINE\\" + WINLOGON_SUBKEY, FIRSTLOGOANIM, 0);
                 Console.WriteLine("Disabled First Boot Screen Screen!");
 
 
