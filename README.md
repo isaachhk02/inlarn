@@ -20,7 +20,7 @@ Simple, Write in the password parameter a ""
 
 Example:
 
-inlarn user ""
+`inlarn user ""`
 
 After finish reboot your computer writing:
 
