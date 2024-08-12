@@ -38,7 +38,7 @@ namespace inlarn
                 Registry.SetValue("HKEY_LOCAL_MACHINE\\" + WINLOGON_SUBKEY, DEFAULTUSERNAMEKEY, "");
 
 
-                Registry.SetValue("HKEY_LOCAL_MACHINE\\" + WINLOGON_SUBKEY, FIRSTLOGOANIM, 0);
+                Registry.SetValue("HKEY_LOCAL_MACHINE\\" + WINLOGON_SUBKEY, FIRSTLOGOANIM, ZERO);
                 Console.WriteLine("Disabled First Boot Screen Screen!");
 
 
