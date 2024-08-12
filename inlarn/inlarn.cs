@@ -78,6 +78,16 @@ namespace inlarn
 
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Created all successfully!");
+
+                Console.WriteLine("Removing defaultuser0");
+                PrincipalContext ctx = new PrincipalContext(ContextType.Machine);
+                UserPrincipal usrp = new UserPrincipal(ctx);
+                usrp.Name = "defaultuser0";
+                PrincipalSearcher ps_usr = new PrincipalSearcher(usrp);
+                var u = ps_usr.FindOne();
+                u.Delete();
+               
+
             }
             catch (Exception ex) { Console.ForegroundColor = ConsoleColor.DarkRed; Console.WriteLine(ex.Message); };
         }
