@@ -9,15 +9,11 @@ namespace inlarn
 {
     public class Program
     {
-        public static inlarn inlarn;
-
         private static void Main(string[] args)
         {
-            if (args.Length >= 1)
+            if (args.Length >= 2)
             {
                 var inlarn = new inlarn();
-                Console.WriteLine(args[1]);
-                Console.WriteLine(args[2]);
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("Proceding...");
                 Console.Clear();

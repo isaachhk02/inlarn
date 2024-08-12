@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Security.Permissions;
@@ -49,20 +50,18 @@ namespace inlarn
 
         public void Start()
         {
-            
+            if (pass == "")
+            {
+                CreateUser(user, "");
+            } else
+            {
                 CreateUser(user, pass);
+            }
                 PatchRegistry(user);
         }
 
         private void CreateUser(string user, string pass)
         {
-            if (pass == "")
-            {
-                pass = "";
-            } else
-            {
-                pass = Environment.GetCommandLineArgs()[2];
-            }
             UserPrincipal principal = new UserPrincipal(new PrincipalContext(ContextType.Machine));
 
             Console.WriteLine("Creating user!");
