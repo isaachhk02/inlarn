@@ -14,6 +14,7 @@ namespace inlarn
     {
         public static string user = Environment.GetCommandLineArgs()[1];
         public static string pass = Environment.GetCommandLineArgs()[2];
+
         string OOBE_SUBKEY = @"SOFTWARE\Microsoft\Windows\CurrentVersion\OOBE";
         string WINLOGON_SUBKEY = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon";
         string OOBE_KEY = "LaunchUserOOBE";
@@ -55,6 +56,13 @@ namespace inlarn
 
         private void CreateUser(string user, string pass)
         {
+            if (pass == null)
+            {
+                pass = "";
+            } else
+            {
+                pass = Environment.GetCommandLineArgs()[2];
+            }
             UserPrincipal principal = new UserPrincipal(new PrincipalContext(ContextType.Machine));
 
             Console.WriteLine("Creating user!");

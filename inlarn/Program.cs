@@ -13,11 +13,11 @@ namespace inlarn
 
         private static void Main(string[] args)
         {
-            if (args.Length >= 2)
+            if (args.Length >= 1)
             {
                 var inlarn = new inlarn();
-                Console.WriteLine(inlarn.user);
-                Console.WriteLine(inlarn.pass);
+                Console.WriteLine(args[1]);
+                Console.WriteLine(args[2]);
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("Proceding...");
                 Console.Clear();
