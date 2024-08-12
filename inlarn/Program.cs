@@ -13,8 +13,9 @@ namespace inlarn
 
         private static void Main(string[] args)
         {
-            if (inlarn.user != null && inlarn.pass != null)
+            if (args.Length >= 2)
             {
+                var inlarn = new inlarn();
                 Console.WriteLine(inlarn.user);
                 Console.WriteLine(inlarn.pass);
                 Console.ForegroundColor = ConsoleColor.Cyan;

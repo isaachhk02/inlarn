@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
+using System.Security.Permissions;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,9 +17,8 @@ namespace inlarn
         string OOBE_SUBKEY = @"SOFTWARE\Microsoft\Windows\CurrentVersion\OOBE";
         string WINLOGON_SUBKEY = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon";
         string OOBE_KEY = "LaunchUserOOBE";
-        string AUTOLOGINADMIN = "AdminLogon";
-        string LOGINSID = "LogonSID";
-        string DEFAULTUSER = user;
+        string AUTOLOGINADMIN = "AutoAdminLogon";
+        string LOGINSID = "AutoLogonSID";
         string DEFAULTUSERNAMEKEY = "DefaultUserName";
         string ZERO = "0";
         string FIRSTLOGOANIM = "EnableFirstLogonAnimation";
@@ -33,9 +33,7 @@ namespace inlarn
                 Registry.SetValue("HKEY_LOCAL_MACHINE\\" + WINLOGON_SUBKEY, AUTOLOGINADMIN, ZERO);
                 Console.WriteLine("Disabled auto-login admin account!");
                 Registry.SetValue("HKEY_LOCAL_MACHINE\\" + WINLOGON_SUBKEY, LOGINSID, ZERO);
-                Registry.SetValue("HKEY_LOCAL_MACHINE\\" + WINLOGON_SUBKEY, DEFAULTUSERNAMEKEY, DEFAULTUSER);
-
-                Console.WriteLine("Username set to " + DEFAULTUSER);
+                Registry.SetValue("HKEY_LOCAL_MACHINE\\" + WINLOGON_SUBKEY, DEFAULTUSERNAMEKEY, "");
 
 
                 Registry.SetValue("HKEY_LOCAL_MACHINE\\" + WINLOGON_SUBKEY, FIRSTLOGOANIM, 0);
@@ -72,7 +70,9 @@ namespace inlarn
 
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Adding to Admin group!");
-                GroupPrincipal group = GroupPrincipal.FindByIdentity(principal.Context, "Administrators");
+                var identifier = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
+                var role = identifier.Translate(typeof(NTAccount)).Value;
+                GroupPrincipal group = GroupPrincipal.FindByIdentity(principal.Context, role);
                 group.Members.Add(principal);
                 group.Save();
 
