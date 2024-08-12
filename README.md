@@ -15,6 +15,13 @@ After that
 Write:
 inlarn.exe your_username your_password (your_username: write your username and your_password obviously your password)
 
+# If not need a password?
+Simple, Write in the password parameter a ""
+
+Example:
+
+inlarn user ""
+
 After finish reboot your computer writing:
 
 `shutdown -r -t 0`
