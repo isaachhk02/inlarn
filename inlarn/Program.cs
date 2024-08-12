@@ -24,6 +24,7 @@ namespace inlarn
                 inlarn.Start();
             } else
             {
+                Console.WriteLine("Created by isaachhk02");
                 Console.WriteLine("inlarn [user] [password]");
             }
         }
