@@ -1,4 +1,4 @@
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
@@ -16,7 +16,7 @@ namespace inlarn
         public static string user = Environment.GetCommandLineArgs()[1];
         public static string pass = Environment.GetCommandLineArgs()[2];
 
-        string OOBE_SUBKEY = @"SOFTWARE\Microsoft\Windows\CurrentVersion\OOBE\LaunchUserOOBE";
+        string OOBE_SUBKEY = @"SOFTWARE\Microsoft\Windows\CurrentVersion\OOBE";
         string WINLOGON_SUBKEY = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon";
         string AUTOLOGINADMIN = "AutoAdminLogon";
         string LOGINSID = "AutoLogonSID";
@@ -29,20 +29,20 @@ namespace inlarn
             try
             {
                 RegistryKey HKLM = Registry.LocalMachine;
-
-                HKLM.DeleteValue(OOBE_SUBKEY,false);
+                HKLM.OpenSubKey(OOBE_SUBKEY);
+                HKLM.DeleteValue("LaunchUserOOBE", true);
                 HKLM.Close();
+               
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Bypassed OOBE Setup (User Setup Wizard)");
-                Registry.SetValue("HKEY_LOCAL_MACHINE\\" + WINLOGON_SUBKEY, AUTOLOGINADMIN, ZERO);
+                HKLM.OpenSubKey(WINLOGON_SUBKEY);
+                HKLM.SetValue(AUTOLOGINADMIN, ZERO);
                 Console.WriteLine("Disabled auto-login admin account!");
-                Registry.SetValue("HKEY_LOCAL_MACHINE\\" + WINLOGON_SUBKEY, LOGINSID, ZERO);
-                Registry.SetValue("HKEY_LOCAL_MACHINE\\" + WINLOGON_SUBKEY, DEFAULTUSERNAMEKEY, "");
-
-
-                Registry.SetValue("HKEY_LOCAL_MACHINE\\" + WINLOGON_SUBKEY, FIRSTLOGOANIM, 0);
+                HKLM.SetValue(LOGINSID, "");
+                HKLM.SetValue(DEFAULTUSERNAMEKEY, user);
+                HKLM.SetValue(FIRSTLOGOANIM, 0);
                 Console.WriteLine("Disabled First Boot Screen Screen!");
-
+                HKLM.Close();
 
             }
             catch (Exception ex) { Console.WriteLine(ex.ToString()); };
@@ -59,7 +59,7 @@ namespace inlarn
             {
                 CreateUser(user, pass);
             }
-                PatchRegistry(user);
+            PatchRegistry(user);
         }
 
         private void CreateUser(string user, string pass)
