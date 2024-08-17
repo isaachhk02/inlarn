@@ -25,3 +25,9 @@ Example:
 After finish reboot your computer writing:
 
 `shutdown -r -t 0`
+
+# Special thanks
+for this Reddit post and the user has discovered the steps here:
+https://www.reddit.com/r/WindowsHelp/comments/1byuyu6/how_to_bypass_windows_11_oobe_forced_microsoft/
+
+I only created this program for make this automatically so special thanks to the user has discovered this.
