@@ -13,7 +13,8 @@ curl -L https://github.com/isaachhk02/inlarn/releases/download/1.0/inlarn.exe --
 After that
 
 Write:
-inlarn.exe your_username your_password (your_username: write your username and your_password obviously your password)
+`inlarn.exe [your_username] [your_password]`
+(use a "" for blank password)
 
 # If not need a password?
 Simple, Write in the password parameter a ""
